@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 void showSnackBar(BuildContext context, String content,bool error){
      const errorColor = Colors.red;
@@ -12,4 +15,17 @@ void showSnackBar(BuildContext context, String content,bool error){
     );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
+}
+
+Future<File?> pickImage(BuildContext context)async{
+  File? image;
+  try{
+    final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if(pickedImage != null){
+      image =  File(pickedImage.path);
+    }
+  }catch(e){
+    showSnackBar(context, e.toString(), true);
+  }
+  return image;
 }

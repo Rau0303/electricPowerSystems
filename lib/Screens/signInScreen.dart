@@ -47,6 +47,7 @@ class _signInScreenState extends State<signInScreen> {
   Widget build(BuildContext context) {
     final ap = Provider.of<authService>(context, listen: true);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         body: Container(
           // Background
           decoration:  const BoxDecoration(
@@ -58,96 +59,92 @@ class _signInScreenState extends State<signInScreen> {
               )
           ),
           child: SafeArea(
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: MediaQuery.of(context).size.height*0.1,
-                  horizontal: MediaQuery.of(context).size.width*0.1,
-                ),
-                child: Column(
-                  children: [
-                    Image.asset(
-                      "assets/register.png",
-                      height: MediaQuery.of(context).size.height*0.30,
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: MediaQuery.of(context).size.height*0.01,
+                horizontal: MediaQuery.of(context).size.width*0.03,
+              ),
+              child: Column(
+                children: [
+                  Image.asset(
+                    "assets/register.png",
+                    height: MediaQuery.of(context).size.height*0.30,
+                  ),
+                  const SizedBox(height: 20,),
+                  const Text(
+                    "Давайте начнем",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
-                    const SizedBox(height: 20,),
-                    const Text(
-                      "Давайте начнем",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
 
+                  ),
+                  const SizedBox(height: 10,),
+
+                  const Text(
+                    "Никогда не было лучшего времени, чем сейчас, чтобы начать",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white70,
                     ),
-                    const SizedBox(height: 10,),
+                  ),
+                  const SizedBox(height: 20,),
+                  //userName
+                  buildTextField(controller: _userNameController, hintText: "Email", myIcon: Icon(Icons.email), obscure: false),
+                  const SizedBox(height: 10,),
+                  //password
+                  buildTextField(controller: _userPassController, hintText: "Пароль", myIcon: Icon(Icons.password), obscure: true),
 
-                    const Text(
-                      "Никогда не было лучшего времени, чем сейчас, чтобы начать",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white70,
-                      ),
+                  const SizedBox(height: 20,),
+
+
+                  //Button
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: MyButton(
+                      text: 'Login',
+                      onPressed:()=> login(),
+                      /*onPressed: (){
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context)=> homeScreen())
+                        );
+                      },*/
                     ),
-                    const SizedBox(height: 20,),
-                    //userName
-                    buildTextField(controller: _userNameController, hintText: "Email", myIcon: Icon(Icons.email), obscure: false),
-                    const SizedBox(height: 10,),
-                    //password
-                    buildTextField(controller: _userPassController, hintText: "Пароль", myIcon: Icon(Icons.password), obscure: true),
+                  ),
+                  SizedBox(height: 10,),
 
-                    const SizedBox(height: 20,),
-
-
-                    //Button
-                    SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: MyButton(
-                        text: 'Login',
-                        onPressed:()=> login(),
-                        /*onPressed: (){
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context)=> homeScreen())
-                          );
-                        },*/
-                      ),
+                  MyTextButton(text: const Text("Нет аккаунта? Зарегистрируйся!"), onPressed: (){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> const signUpScreen()));
+                  }),
+                  
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Text("или"),
+                  SizedBox(
+                    height: 50,
+                    child: IconButton(
+                      icon: Icon(Icons.phone_android),
+                      iconSize: 50,
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> const RegisterScreen()));
+                      },
                     ),
-                    SizedBox(height: 15,
-                     child: MyTextButton(
-                        text: const Text("Нет аккаунта? Зарегайся)"),
-                        onPressed:(){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=> const signUpScreen()));
-                        }
-                    ),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Text("или"),
-                    SizedBox(
-                      height: 10,
-                      child: IconButton(
-                        icon: Icon(Icons.phone_android),
-                        iconSize: 50,
-                        onPressed: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=> const RegisterScreen()));
-                        },
-                      ),
 
-                    )
+                  )
 
 
 
 
 
 
-                  ],
-                ),
+                ],
               ),
             ),
           ),

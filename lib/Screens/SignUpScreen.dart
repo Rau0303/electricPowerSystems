@@ -40,6 +40,7 @@ class _signUpScreenState extends State<signUpScreen> {
   Widget build(BuildContext context) {
     final ap = Provider.of<authService>(context,listen: true);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         body: Container(
           decoration:  const BoxDecoration(
               gradient: LinearGradient(colors: [
@@ -50,70 +51,66 @@ class _signUpScreenState extends State<signUpScreen> {
               )
           ),
           child: SafeArea(
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: MediaQuery.of(context).size.height*0.1,
-                  horizontal: MediaQuery.of(context).size.width*0.1,
-                ),
-                child: Column(
-                  children: [
-                    Image.asset(
-                      "assets/register.png",
-                      height: MediaQuery.of(context).size.height*0.30,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20,vertical: 15),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Image.asset(
+                    "assets/register.png",
+                    scale: 0.4,
+                  ),
+                  const SizedBox(height: 20,),
+                  const Text(
+                    "Давайте начнем",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
-                    const SizedBox(height: 20,),
-                    const Text(
-                      "Давайте начнем",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
 
+                  ),
+                  const SizedBox(height: 10,),
+
+                  const Text(
+                    "Никогда не было лучшего времени, чем сейчас, чтобы начать",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white70,
                     ),
-                    const SizedBox(height: 10,),
+                  ),
+                  const SizedBox(height: 20,),
+                  buildTextField(controller: _userNameController, hintText: "Email", myIcon: Icon(Icons.email), obscure: false),
+                  const SizedBox(height: 10,),
+                  buildTextField(controller: _userPassController, hintText: "Пароль", myIcon: Icon(Icons.password), obscure: true),
+                  const SizedBox(height: 10,),
+                  buildTextField(controller: _userPassRepeatController, hintText: "Повторите пароль ", myIcon: Icon(Icons.password), obscure: true),
 
-                    const Text(
-                      "Никогда не было лучшего времени, чем сейчас, чтобы начать",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white70,
-                      ),
+                  const SizedBox(height: 20,),
+
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: MyButton(
+                      text: 'Login',
+                      onPressed:()=> signUp(),
+                      /*onPressed: (){
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context)=> homeScreen())
+                        );
+                      },*/
                     ),
-                    const SizedBox(height: 20,),
-                    buildTextField(controller: _userNameController, hintText: "Email", myIcon: Icon(Icons.email), obscure: false),
-                    const SizedBox(height: 10,),
-                    buildTextField(controller: _userPassController, hintText: "Пароль", myIcon: Icon(Icons.password), obscure: true),
-                    const SizedBox(height: 10,),
-                    buildTextField(controller: _userPassRepeatController, hintText: "Повторите пароль ", myIcon: Icon(Icons.password), obscure: true),
-
-                    const SizedBox(height: 20,),
-
-                    SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: MyButton(
-                        text: 'Login',
-                        onPressed:()=> signUp(),
-                        /*onPressed: (){
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context)=> homeScreen())
-                          );
-                        },*/
-                      ),
-                    )
+                  )
 
 
 
 
 
-                  ],
-                ),
+                ],
               ),
             ),
           ),

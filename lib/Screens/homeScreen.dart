@@ -18,8 +18,8 @@ class homeScreen extends StatefulWidget {
 class _homeScreenState extends State<homeScreen> {
   int currentIndex = 0;
    List<Widget> tabs = [
-     Mymap(),
-     myFavoritesScreen(),
+     MapScreen(),
+     FavoriteScreen(),
      Center(child: Text("cars"),),
      profileScreen(),
    ];

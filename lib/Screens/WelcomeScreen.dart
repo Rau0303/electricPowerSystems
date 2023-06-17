@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:electric_power_systems/Screens/RegisterScreen.dart';
 import 'package:electric_power_systems/Screens/homeScreen.dart';
 import 'package:electric_power_systems/Screens/signInScreen.dart';
@@ -54,6 +55,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
 
                   ),
                   const SizedBox(height: 10,),
+
+
 
                   const Text(
                     "Никогда не было лучшего времени, чем сейчас, чтобы начать",

@@ -1,7 +1,12 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:electric_power_systems/Models/userModel.dart';
 import 'package:electric_power_systems/Screens/homeScreen.dart';
 import 'package:electric_power_systems/Services/Snackbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,8 +21,12 @@ class authService extends ChangeNotifier{
   String? _uid ;
   String get uid => _uid!;
 
+  userModel? _UserModel;
+  userModel get UserModel => _UserModel!;
+
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
+  final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
   authService(){
     checkSignIn();
@@ -26,6 +35,13 @@ class authService extends ChangeNotifier{
   void checkSignIn() async{
     final SharedPreferences s = await SharedPreferences.getInstance();
     _isSignedIn = s.getBool("is_signedin")?? false;
+    notifyListeners();
+  }
+
+  Future setSignIn() async{
+    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setBool("is_signedin", true);
+    _isLoading = true;
     notifyListeners();
   }
 
@@ -41,7 +57,8 @@ class authService extends ChangeNotifier{
           verificationFailed: (FirebaseAuthException error){
             throw Exception(error.message);
           },
-          codeSent: (verificationId, forceResendingToken){
+          codeSent: (=]
+              , forceResendingToken){
             Navigator.push(
                 context, 
               MaterialPageRoute(
@@ -151,4 +168,54 @@ void createUserWithEmailAndPassword(BuildContext context,String email,String pas
     );
 }
 
+  void saveUserDataToFirebase(
+  {
+  required BuildContext context,
+    required userModel UserModel,
+    required File profilePicture,
+    required Function onSuccess,
+}) async{
+    _isLoading = true;
+    notifyListeners();
+    try{
+      // Загрузка фотографии на Firebase stroge
+      await storeFileToStorage("profilePicture/$_uid", profilePicture).then((value){
+        UserModel.profilePicture = value;
+        UserModel.createdAt = DateTime.now().millisecondsSinceEpoch.toString();
+        UserModel.phoneNumber = _firebaseAuth.currentUser!.phoneNumber!;
+        UserModel.uid = _firebaseAuth.currentUser!.phoneNumber!;
+      });
+      _UserModel = UserModel;
+
+      //загрузка в БД
+
+      await _firebaseFirestore.collection("users").doc(_uid).set(UserModel.toMap()).then((value){
+        onSuccess();
+        _isLoading = false;
+        notifyListeners();
+
+      });
+
+    } on FirebaseAuthException catch(e){
+      showSnackBar(context, e.message.toString(), true);
+      _isLoading = false;
+      notifyListeners();
+    }
+
+    
+  }
+  Future <String> storeFileToStorage(String ref, File file) async{
+    UploadTask uploadTask = _firebaseStorage.ref().child(ref).putFile(file);
+    TaskSnapshot snapshot = await uploadTask;
+    String downloadUrl = await snapshot.ref.getDownloadURL();
+    return downloadUrl;
+  }
+
+  // Хранение данных локально
+
+  Future saveUserDate() async{
+    SharedPreferences sharedPreferences =  await SharedPreferences.getInstance();
+    await sharedPreferences.setString("userModel", jsonEncode(UserModel.toMap()));
+
+  }
 }

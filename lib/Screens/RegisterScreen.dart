@@ -1,4 +1,4 @@
-import 'package:country_picker/country_picker.dart';
+  import 'package:country_picker/country_picker.dart';
 import 'package:electric_power_systems/Screens/homeScreen.dart';
 import 'package:electric_power_systems/Services/AuthService.dart';
 import 'package:electric_power_systems/Widgets/buildTextField.dart';
@@ -42,104 +42,103 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     final ap = Provider.of<authService>(context, listen: true);
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          decoration:  const BoxDecoration(
-              gradient: LinearGradient(colors: [
-                Color.fromRGBO(160, 102, 203, 1),
-                Color.fromRGBO(134, 199, 237, 1),],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              )
-          ),
-          child: SafeArea(
-            child: Center(
-              child: Padding(
-                padding: EdgeInsets.symmetric(
-                  vertical: MediaQuery.of(context).size.height*0.1,
-                  horizontal: MediaQuery.of(context).size.width*0.1,
-                ),
-                child: Column(
-                  children: [
-                    Image.asset(
-                      "assets/register.png",
-                      height: MediaQuery.of(context).size.height*0.30,
+      resizeToAvoidBottomInset: false,
+      body: Container(
+        decoration:  const BoxDecoration(
+            gradient: LinearGradient(colors: [
+              Color.fromRGBO(160, 102, 203, 1),
+              Color.fromRGBO(134, 199, 237, 1),],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            )
+        ),
+        child: SafeArea(
+          child: Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                vertical: MediaQuery.of(context).size.height*0.1,
+                horizontal: MediaQuery.of(context).size.width*0.1,
+              ),
+              child: Column(
+                children: [
+                  Image.asset(
+                    "assets/register.png",
+                    height: MediaQuery.of(context).size.height*0.30,
+                  ),
+                  const SizedBox(height: 20,),
+                  const Text(
+                    "Давайте начнем",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
-                    const SizedBox(height: 20,),
-                    const Text(
-                      "Давайте начнем",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
 
-                    ),
-                    const SizedBox(height: 10,),
+                  ),
+                  const SizedBox(height: 10,),
 
-                    const Text(
-                      "Никогда не было лучшего времени, чем сейчас, чтобы начать",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white70,
-                      ),
+                  const Text(
+                    "Никогда не было лучшего времени, чем сейчас, чтобы начать",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white70,
                     ),
-                    const SizedBox(height: 20,),
-                    TextFormField(
-                      controller: userPhoneController,
-                      decoration: InputDecoration(
-                        hintText: "Введите номер телефона",
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        prefixIcon: Container(
-                          margin: EdgeInsets.all(13.0),
-                          child: InkWell(
-                            onTap: (){
-                              showCountryPicker(
-                                  context: context,
-                                  onSelect: (value){
-                                    setState(() {
-                                      country= value;
-                                    });
+                  ),
+                  const SizedBox(height: 20,),
+                  TextFormField(
+                    controller: userPhoneController,
+                    decoration: InputDecoration(
+                      hintText: "Введите номер телефона",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      prefixIcon: Container(
+                        margin: EdgeInsets.all(13.0),
+                        child: InkWell(
+                          onTap: (){
+                            showCountryPicker(
+                                context: context,
+                                onSelect: (value){
+                                  setState(() {
+                                    country= value;
                                   });
-                            },
-                            child: Text(
-                              "${country.flagEmoji} ${country.phoneCode}",
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
+                                });
+                          },
+                          child: Text(
+                            "${country.flagEmoji} ${country.phoneCode}",
+                            style: TextStyle(
+                              fontSize: 16,
                             ),
                           ),
+                        ),
 
-                        )
-
-                      ),
-
+                      )
 
                     ),
 
-                    const SizedBox(height: 20,),
 
-                    SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: MyButton(
-                        text: 'Login',
-                        //onPressed:()=> sendPhoneNumber(),
-                        onPressed: (){
-                          Navigator.push(
-                              context,
-                          MaterialPageRoute(builder: (context)=> homeScreen())
-                          );
-                        },
-                      ),
+                  ),
+
+                  const SizedBox(height: 20,),
+
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: MyButton(
+                      text: 'Login',
+                      onPressed:()=> sendPhoneNumber(),
+                      /*onPressed: (){
+                        Navigator.push(
+                            context,
+                        MaterialPageRoute(builder: (context)=> homeScreen())
+                        );
+                      },*/
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),

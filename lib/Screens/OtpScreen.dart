@@ -106,7 +106,7 @@ class _otpScreenState extends State<otpScreen> {
                      height: 50,
                       width: double.infinity,
                       child: MyButton(text: "verify",
-                        onPressed:()=> verifyOtp(context, otpControler.text.trim()),
+                        onPressed:()=> verifyOtp(context, otpControler.text),
 
                       ),
                     ),

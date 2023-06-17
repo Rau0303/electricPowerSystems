@@ -1,5 +1,10 @@
+import 'package:electric_power_systems/Models/userModel.dart';
+import 'package:electric_power_systems/Screens/homeScreen.dart';
+import 'package:electric_power_systems/Services/AuthService.dart';
+import 'package:electric_power_systems/Services/Snackbar.dart';
 import 'package:electric_power_systems/Widgets/buildTextField.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'dart:io';
 
 import '../Widgets/MyTextButton.dart';
@@ -19,8 +24,26 @@ class _editProfileScreenState extends State<editProfileScreen> {
 
   File? image;
 
+  // select image
+
+  void selectImage() async{
+    image = await pickImage(context);
+    setState(() {
+
+    });
+  }
+
+  @override
+  void dispose() {
+    _fullNameController.dispose();
+    _userEmailController.dispose();
+    _userPhoneController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final isLoading = Provider.of<authService>(context,listen: true).isLoading;
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(50),
@@ -33,7 +56,7 @@ class _editProfileScreenState extends State<editProfileScreen> {
               child: Column(
                 children: [
                   InkWell(
-                    onTap: (){},
+                    onTap: ()=> selectImage(),
                     child: image==null ? const CircleAvatar(
                       backgroundColor: Colors.grey,
                       radius: 70,
@@ -57,7 +80,7 @@ class _editProfileScreenState extends State<editProfileScreen> {
                     width: double.infinity,
                     child: MyTextButton(
                       text: const Text("Сохранить"),
-                      onPressed: (){},
+                      onPressed: ()=> storeData(),
                     )
                   )
                 ],
@@ -68,5 +91,28 @@ class _editProfileScreenState extends State<editProfileScreen> {
         ),
       ),
     );
+  }
+
+  void storeData() async{
+    final ap = Provider.of<authService>(context,listen: false);
+    userModel UserModel = userModel(
+        name: _fullNameController.text.trim(),
+        email: _userEmailController.text.trim(),
+        profilePicture: "",
+        phoneNumber: _userPhoneController.text.trim(),
+        uid: "",
+      createdAt: "",
+
+    );
+    if(image != null){
+      ap.saveUserDataToFirebase(
+          context: context,
+          UserModel: UserModel,
+          profilePicture: image!,
+          onSuccess: (){
+            ap.saveUserDate().then((value) =>ap.setSignIn().then((value)=>
+            Navigator.pop(context)));
+          });
+    }
   }
 }

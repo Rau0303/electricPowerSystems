@@ -46,6 +46,10 @@ dependencies:
   flutter_map: ^3.1.0
   pinput: ^2.2.21
   google_nav_bar: ^5.0.6
+  http: ^0.13.5
+  flutter_map_marker_cluster: ^1.0.2
+  image_picker: ^0.8.7
+  geolocator: ^7.1.0
 
 dev_dependencies:
   flutter_test:
